@@ -1,0 +1,190 @@
+name: Sequential Thinking
+description: >
+  [![NPM](https://img.shields.io/npm/v/sequential-thinking-mcp)](https://www.npmjs.com/package/sequential-thinking-mcp) [<img alt="Install in VS Code (npx)" src="https://img.shields.io/badge/VS_Code-VS_Code?style=flat-square&label=Install%20Sequential%20Thinking%20MCP&color=0098FF">](https://insiders.vscode.dev/redirect?url=vscode%3Amcp%2Finstall%3F%7B%22name%22%3A%22sequential-thinking%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22sequential-thinking-mcp%40latest%22%5D%7D)
+
+  Sequential Thinking is an MCP server that provides structured reasoning capabilities and process automation.
+  It helps AI agents break down complex problems into sequential steps, maintain reasoning chains, and execute
+  multi-step processes with validation and rollback capabilities. Use Sequential Thinking to create reliable
+  reasoning workflows, validate logical steps, and automate complex decision-making processes.
+
+  ## Features
+
+  - **Sequential Reasoning**: Break down complex problems into manageable steps
+  - **Chain Validation**: Verify logical consistency across reasoning chains
+  - **Process Automation**: Execute multi-step workflows with error handling
+  - **State Management**: Track and manage intermediate states in complex processes
+  - **Rollback Support**: Undo steps when errors are detected
+  - **Decision Trees**: Navigate complex decision-making scenarios
+
+  ## What you'll need to connect
+
+  **No Setup Required**: Sequential Thinking works out-of-the-box with default configurations.
+
+  **Optional Configuration:**
+  - **MAX_REASONING_DEPTH**: Maximum depth for reasoning chains (default: 10)
+  - **VALIDATION_MODE**: Validation strictness level (`strict`, `moderate`, `relaxed`)
+  - **STATE_PERSISTENCE**: Enable persistent state storage for long-running processes
+
+  ## Examples
+
+  ```txt
+  Break down the problem of implementing a user authentication system into sequential steps
+  ```
+
+  ```txt
+  Create a reasoning chain for deciding which cloud provider to use for a new project
+  ```
+
+  ### Usage Tips
+
+  - Start with clear problem statements for best results
+  - Use validation checkpoints for complex reasoning chains
+  - Enable state persistence for long-running processes
+  - Review intermediate steps before proceeding to final execution
+
+metadata:
+  categories: Developer Tools
+  unsupportedTools: none
+  tags:
+    - reasoning
+    - automation
+    - process
+    - workflow
+    - decision-making
+icon: https://github.com/sequential-thinking.png
+repoURL: https://github.com/sequential-thinking/sequential-thinking-mcp
+created: 2025-10-14
+
+env:
+  - key: MAX_REASONING_DEPTH
+    name: Maximum Reasoning Depth
+    required: false
+    sensitive: false
+    description: 'Maximum depth for reasoning chains. Higher values allow more complex reasoning but may impact performance. (default: 10)'
+
+  - key: VALIDATION_MODE
+    name: Validation Mode
+    required: false
+    sensitive: false
+    description: 'Validation strictness level: `strict` (all steps validated), `moderate` (key steps validated), or `relaxed` (minimal validation). Default: moderate'
+
+  - key: STATE_PERSISTENCE
+    name: State Persistence
+    required: false
+    sensitive: false
+    description: 'Enable persistent state storage for long-running processes. Set to `true` to enable, `false` to disable. Default: false'
+
+  - key: REASONING_API_KEY
+    name: API Key (for hosted deployments)
+    required: false
+    sensitive: true
+    description: API key for authenticating with hosted Sequential Thinking MCP instances.
+
+toolPreview:
+  - name: create_reasoning_chain
+    description: Create a new sequential reasoning chain for a given problem
+    params:
+      problem: The problem statement to reason about
+      context: Additional context or constraints (optional)
+      maxSteps: Maximum number of reasoning steps (optional)
+
+  - name: validate_reasoning_step
+    description: Validate a single step in a reasoning chain
+    params:
+      stepId: The ID of the step to validate
+      reasoning: The reasoning content to validate
+      previousSteps: Array of previous step IDs for context validation (optional)
+
+  - name: execute_reasoning_chain
+    description: Execute a complete reasoning chain and return the final conclusion
+    params:
+      chainId: The ID of the reasoning chain to execute
+      executeActions: Whether to execute any actions identified in the reasoning (optional)
+      validateSteps: Whether to validate each step before execution (optional)
+
+  - name: create_decision_tree
+    description: Create a decision tree for complex decision-making scenarios
+    params:
+      scenario: The decision scenario description
+      criteria: Array of decision criteria and weights
+      options: Array of available options to evaluate
+
+  - name: navigate_decision_tree
+    description: Navigate through a decision tree based on inputs and criteria
+    params:
+      treeId: The ID of the decision tree
+      inputs: Input values for decision criteria
+      explainPath: Whether to provide explanations for each decision point (optional)
+
+  - name: rollback_reasoning_step
+    description: Rollback to a previous step in a reasoning chain
+    params:
+      chainId: The ID of the reasoning chain
+      targetStepId: The step ID to rollback to
+      reason: Reason for the rollback (optional)
+
+  - name: get_reasoning_state
+    description: Get the current state of a reasoning chain or decision process
+    params:
+      processId: The ID of the reasoning chain or decision tree
+      includeHistory: Whether to include step history (optional)
+
+  - name: list_active_processes
+    description: List all active reasoning chains and decision processes
+    params:
+      filter: Optional filter criteria (e.g., 'status:active', 'type:reasoning')
+
+runtime: containerized
+containerizedConfig:
+  image: ghcr.io/obot-platform/mcp-images/sequential-thinking:0.1.0
+  port: 8099
+  path: /
+  args:
+    - sequential-thinking
+
+# Local installation / developer experience (npx)
+install:
+  command: npx
+  args:
+    - -y
+    - "sequential-thinking-mcp@latest"
+
+# VS Code install redirect payload (used in description badge)
+vsCodeInstall:
+  name: sequential-thinking
+  command: npx
+  args:
+    - -y
+    - "sequential-thinking-mcp@latest"
+
+examples:
+  - description: Create a reasoning chain for system architecture decisions
+    code: |
+      ```yaml
+      problem: "Design a scalable user authentication system"
+      context: "E-commerce platform with 100k+ users"
+      criteria:
+        - security
+        - scalability
+        - maintenance
+        - cost
+      ```
+
+  - description: Decision tree for cloud provider selection
+    code: |
+      ```yaml
+      scenario: "Choose cloud provider for new application"
+      criteria:
+        - cost_importance: 0.3
+        - performance_importance: 0.4
+        - support_importance: 0.3
+      options:
+        - AWS
+        - Google Cloud
+        - Azure
+      ```
+
+notes: |
+  Sequential Thinking MCP supports both containerized deployments and local NPX-based developer installs.
+  For production use, prefer the containerized image and configure STATE_PERSISTENCE for long-running
+  processes. For development and testing, use the NPX install for quick setup without container overhead.
