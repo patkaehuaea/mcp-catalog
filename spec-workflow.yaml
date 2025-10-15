@@ -1,135 +1,92 @@
 name: Spec Workflow
-description: >
-  [![Website](https://img.shields.io/badge/Website-spec-workflow.dev-blue)](https://spec-workflow.dev) [<img alt="Install in VS Code (npx)" src="https://img.shields.io/badge/VS_Code-VS_Code?style=flat-square&label=Install%20Spec%20Workflow%20MCP&color=0098FF">](https://insiders.vscode.dev/redirect?url=vscode%3Amcp%2Finstall%3F%7B%22name%22%3A%22spec-workflow%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40pimzino%2Fspec-workflow-mcp%40latest%22%5D%7D)
-
-  Spec Workflow is an MCP server designed for defining, validating, and executing spec-driven workflows.
-  It provides a stable specification language for workflows, validation tooling, simulation, and an execution
-  environment that can run either containerized or via npx-based local invocation. Use Spec Workflow to
-  author machine-readable specs, verify them against schemas, run dry-run simulations, and trigger
-  orchestrated actions from language-model prompts.
+description: |
+  A Model Context Protocol (MCP) server designed for defining, validating, and executing spec-driven workflows. It provides a stable specification language for workflows, validation tooling, simulation, and an execution environment. Use Spec Workflow to author machine-readable specs, verify them against schemas, run dry-run simulations, and trigger orchestrated actions from language-model prompts.
 
   ## Features
+  - **Structured Development Workflow**: Sequential spec creation (Requirements → Design → Tasks)
+  - **Real-Time Web Dashboard**: Monitor specs, tasks, and progress with live updates
+  - **VSCode Integration**: Integrated sidebar dashboard for VSCode users
+  - **Approval Workflow**: Complete approval process with revisions and feedback
+  - **Task Progress Tracking**: Visual progress bars and detailed status monitoring
+  - **Multi-Language Support**: Available in 11 languages including English, Japanese, Chinese, Spanish, Portuguese, German, French, Russian, Italian, Korean, and Arabic
 
-  - Spec creation, validation, and versioning
-  - Workflow simulation and dry-run capabilities
-  - Execution adapters (HTTP, shell, cloud functions)
-  - Pluggable validators and custom tool integrations
+  ## What you'll need to connect
 
-  ## Install & Run
+  **Project Directory**: Spec Workflow requires a project directory path where it will create and manage specs, approvals, and workflow files.
 
-  - Container (recommended for production): see `containerizedConfig` below
-  - Local (developer): install via npx: `npx -y @pimzino/spec-workflow-mcp@latest`
+  **Optional Configuration**:
+  - Spec storage location (local files, S3, or remote HTTP endpoint)
+  - Execution mode settings (local, HTTP, or cloud)
+  - API keys for hosted deployments
+
+  ## Example Usage
+
+  Ask your AI assistant to:
+
+  - **Create Development Specs** - "Create a spec for user authentication system"
+  - **Track Progress** - "List my specs and show their current status"
+  - **Execute Tasks** - "Execute task 1.2 in the user-auth spec"
+  - **Approval Workflow** - "Request approval for the authentication design spec"
+  - **Dashboard Access** - "Show me the spec workflow dashboard"
 
 metadata:
   categories: Developer Tools
-  unsupportedTools: none
   tags:
     - workflow
     - spec
     - automation
+    - project-management
 icon: https://github.com/Pimzino.png
 repoURL: https://github.com/Pimzino/spec-workflow-mcp
-created: 2025-10-14
 
 env:
+  - key: PROJECT_PATH
+    name: Project Directory Path
+    required: true
+    sensitive: false
+    description: "Absolute path to the project directory where specs and workflow files will be managed"
   - key: SPEC_STORAGE
     name: Spec Storage Location
     required: false
     sensitive: false
-    description: |
-      URL or path where specs are persisted. Examples: `s3://bucket/specs`, `file:///data/specs`, or a remote HTTP endpoint.
-
+    description: "URL or path where specs are persisted. Examples: s3://bucket/specs, file:///data/specs, or a remote HTTP endpoint. Default: local project directory"
   - key: SWF_EXECUTION_MODE
     name: Execution Mode
     required: false
     sensitive: false
-    description: 'Default execution adapter: `local`, `http`, or `cloud`. Defaults to `local`.'
-
+    description: "Default execution adapter: local, http, or cloud. Default: local"
   - key: SWF_API_KEY
-    name: API Key (for hosted deployments)
+    name: API Key
     required: false
     sensitive: true
-    description: API key used to authenticate requests with a hosted Spec Workflow MCP.
+    description: "API key used to authenticate requests with a hosted Spec Workflow MCP instance"
+  - key: AUTO_START_DASHBOARD
+    name: Auto Start Dashboard
+    required: false
+    sensitive: false
+    description: "Set to 'true' to automatically start the web dashboard on server startup"
 
 toolPreview:
   - name: create_spec
-    description: Create a new spec object in the Spec Workflow store
-    params:
-      name: Human-readable spec name
-      content: Spec content (YAML or JSON)
-      version: Optional version string
-
-  - name: validate_spec
-    description: Validate a spec against the active schema and return diagnostics
-    params:
-      specId: The ID of the spec to validate
-      content: Optional spec content to validate (if not using stored spec)
-
-  - name: simulate_workflow
-    description: Run a dry-run simulation of a workflow and return a trace of steps
-    params:
-      workflowId: Workflow identifier or spec reference
-      inputs: JSON object of inputs to the workflow (optional)
-      maxSteps: Maximum simulation steps (optional)
-
-  - name: run_workflow
-    description: Execute a workflow defined by a spec (may be long-running)
-    params:
-      workflowId: Workflow identifier or spec reference
-      inputs: JSON object of inputs to the workflow (optional)
-      runOptions: Optional execution overrides (e.g., dryRun, concurrency)
-
+    description: Create a new spec in the project workflow
   - name: list_specs
-    description: List available specs in the store
-    params:
-      filter: Optional filter expression (e.g., `owner:team-a`)
+    description: List all specs and their current status
+  - name: get_spec_details
+    description: Get detailed information about a specific spec
+  - name: update_spec_status
+    description: Update the status or progress of a spec
+  - name: execute_task
+    description: Execute a specific task within a spec
+  - name: request_approval
+    description: Submit a spec or task for approval
+  - name: provide_feedback
+    description: Provide feedback on specs or tasks
+  - name: open_dashboard
+    description: Open the web-based dashboard interface
 
-  - name: get_spec_versions
-    description: Retrieve available versions for a given spec
-    params:
-      specId: The ID of the spec
-
-runtime: containerized
-containerizedConfig:
-  image: ghcr.io/obot-platform/mcp-images/spec-workflow:0.1.0
-  port: 8099
-  path: /
+runtime: npx
+npxConfig:
+  package: "@pimzino/spec-workflow-mcp@latest"
   args:
-    - spec-workflow
-
-# Local installation / developer experience (npx)
-install:
-  command: npx
-  args:
-    - -y
-    - "@pimzino/spec-workflow-mcp@latest"
-
-# VS Code install redirect payload (used in description badge)
-vsCodeInstall:
-  name: spec-workflow
-  command: npx
-  args:
-    - -y
-    - "@pimzino/spec-workflow-mcp@latest"
-
-examples:
-  - description: Create and validate a simple spec
-    code: |
-      ```yaml
-      name: sample-workflow
-      steps:
-        - id: fetch
-          type: http
-          request:
-            url: https://api.example.com/data
-        - id: transform
-          type: script
-          run: |
-            # transform logic
-      ```
-
-notes: |
-  This MCP supports both containerized deployments and local NPX-based developer installs. For
-  production use, prefer the containerized image and set `SPEC_STORAGE` to durable storage. For
-  local development, use the `npx` install above to run quickly without rebuilding images.
+  - "${PROJECT_PATH}"
 

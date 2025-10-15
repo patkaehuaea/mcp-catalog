@@ -1,0 +1,103 @@
+name: Serena
+description: |
+  A powerful coding agent toolkit that provides IDE-like semantic code analysis capabilities through the Model Context Protocol. Serena uses Language Server Protocol (LSP) to enable AI agents to understand, navigate, and edit code at the symbol level rather than just text-based operations.
+
+  ## Features
+  - **Semantic Code Understanding**: Navigate code using symbols, references, and definitions rather than text search
+  - **Multi-Language Support**: Out-of-the-box support for Python, TypeScript/JavaScript, Go, Rust, Java, C#, PHP, Ruby, Swift, and many more
+  - **Intelligent Code Editing**: Insert/replace code at symbol boundaries with precise positioning
+  - **Project Management**: Activate projects, manage memories, and maintain context across sessions
+  - **Shell Integration**: Execute commands and run tests directly within the coding environment
+  - **Onboarding & Memory System**: Automatically learns project structure and stores insights for future reference
+
+  ## What you'll need to connect
+
+  **No API Keys Required**: Serena runs locally and doesn't require external service authentication.
+
+  **Prerequisites:**
+  - Python environment with `uv` package manager installed
+  - Git repository or structured codebase to work with
+  - Language servers for your target programming languages (most install automatically)
+
+  ## Example Usage
+
+  Ask your AI assistant to:
+
+  - **Smart Code Navigation** - "Find all references to the `UserService` class"
+  - **Semantic Code Editing** - "Add a new method called `validateEmail` to the User class"  
+  - **Project Analysis** - "Activate my project and show me the main entry points"
+  - **Intelligent Refactoring** - "Replace the implementation of the `authenticate` function with JWT tokens"
+  - **Context-Aware Development** - "Run the tests and fix any failures you find"
+
+toolPreview:
+- name: activate_project
+  description: Activates a project by name or path for semantic analysis
+- name: find_symbol
+  description: Search for symbols (functions, classes, variables) by name across the project
+- name: find_referencing_symbols
+  description: Find all code locations that reference a specific symbol
+- name: get_symbols_overview
+  description: Get an overview of top-level symbols defined in a file
+- name: replace_symbol_body
+  description: Replace the complete implementation of a function or method
+- name: insert_after_symbol
+  description: Insert new code after the definition of a specific symbol
+- name: insert_before_symbol
+  description: Insert new code before the definition of a specific symbol
+- name: read_file
+  description: Read file contents within the activated project
+- name: create_text_file
+  description: Create or overwrite files in the project directory
+- name: execute_shell_command
+  description: Execute shell commands for testing, building, or project operations
+- name: search_for_pattern
+  description: Search for text patterns across the project codebase
+- name: onboarding
+  description: Analyze project structure and create initial memories
+- name: write_memory
+  description: Store project insights and context for future sessions
+- name: read_memory
+  description: Retrieve stored project memories and insights
+
+metadata:
+  categories: Developer Tools
+icon: https://raw.githubusercontent.com/oraios/serena/main/resources/serena-logo.svg
+repoURL: https://github.com/oraios/serena
+env:
+- key: SERENA_PROJECT_PATH
+  name: Default Project Path
+  required: false
+  sensitive: false
+  description: "Optional: Absolute path to automatically activate a specific project on startup"
+- key: SERENA_CONTEXT
+  name: Context Mode
+  required: false
+  sensitive: false
+  description: "Context for Serena operation (desktop-app, ide-assistant, agent, codex). Default: desktop-app"
+- key: SERENA_MODES
+  name: Operation Modes
+  required: false
+  sensitive: false
+  description: "Comma-separated list of modes (planning, editing, interactive, one-shot, no-onboarding)"
+- key: SERENA_READ_ONLY
+  name: Read-Only Mode
+  required: false
+  sensitive: false
+  description: "Set to 'true' to disable all editing tools and prevent codebase modifications"
+- key: SERENA_DASHBOARD_ENABLED
+  name: Enable Dashboard
+  required: false
+  sensitive: false
+  description: "Set to 'false' to disable the web-based dashboard (default: true)"
+
+runtime: uvx
+uvxConfig:
+  args:
+  - --from
+  - git+https://github.com/oraios/serena
+  - serena
+  - start-mcp-server
+  - --transport
+  - streamable-http
+  - --port
+  - "8080"
