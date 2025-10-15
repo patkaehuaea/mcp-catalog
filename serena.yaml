@@ -90,11 +90,13 @@ env:
   sensitive: false
   description: "Set to 'false' to disable the web-based dashboard (default: true)"
 
-runtime: uvx
-uvxConfig:
-  package: git+https://github.com/oraios/serena
+runtime: containerized
+containerizedConfig:
+  image: ghcr.io/oraios/serena:latest
+  port: 8080
+  path: /
+  command: serena
   args:
-  - serena
   - start-mcp-server
   - --transport
   - streamable-http
