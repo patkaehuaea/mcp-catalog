@@ -1,92 +1,199 @@
 name: Spec Workflow
-description: |
-  A Model Context Protocol (MCP) server designed for defining, validating, and executing spec-driven workflows. It provides a stable specification language for workflows, validation tooling, simulation, and an execution environment. Use Spec Workflow to author machine-readable specs, verify them against schemas, run dry-run simulations, and trigger orchestrated actions from language-model prompts.
+description: >
+  [![NPM](https://img.shields.io/npm/v/@pimzino/spec-workflow-mcp)](https://www.npmjs.com/package/@pimzino/spec-workflow-mcp) [<img alt="Install in VS Code (npx)" src="https://img.shields.io/badge/VS_Code-VS_Code?style=flat-square&label=Install%20Spec%20Workflow%20MCP&color=0098FF">](https://insiders.vscode.dev/redirect?url=vscode%3Amcp%2Finstall%3F%7B%22name%22%3A%22spec-workflow%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40pimzino%2Fspec-workflow-mcp%40latest%22%2C%22%2Fpath%2Fto%2Fyour%2Fproject%22%5D%7D)
+
+  Spec Workflow is an MCP server for structured spec-driven development with real-time dashboard and VSCode extension.
+  It provides sequential spec creation (Requirements → Design → Tasks), approval workflows, task progress tracking,
+  and multi-language support. Use Spec Workflow to create reliable development workflows, manage project specifications,
+  track implementation progress, and collaborate through approval processes.
 
   ## Features
+
   - **Structured Development Workflow**: Sequential spec creation (Requirements → Design → Tasks)
   - **Real-Time Web Dashboard**: Monitor specs, tasks, and progress with live updates
-  - **VSCode Integration**: Integrated sidebar dashboard for VSCode users
+  - **VSCode Extension**: Integrated sidebar dashboard for VSCode users
   - **Approval Workflow**: Complete approval process with revisions and feedback
   - **Task Progress Tracking**: Visual progress bars and detailed status monitoring
-  - **Multi-Language Support**: Available in 11 languages including English, Japanese, Chinese, Spanish, Portuguese, German, French, Russian, Italian, Korean, and Arabic
+  - **Multi-Language Support**: Available in 11 languages (English, Japanese, Chinese, Spanish, Portuguese, German, French, Russian, Italian, Korean, Arabic)
 
   ## What you'll need to connect
 
-  **Project Directory**: Spec Workflow requires a project directory path where it will create and manage specs, approvals, and workflow files.
+  **Project Directory**: Spec Workflow requires a project directory path where it will create and manage the `.spec-workflow/` structure.
 
-  **Optional Configuration**:
-  - Spec storage location (local files, S3, or remote HTTP endpoint)
-  - Execution mode settings (local, HTTP, or cloud)
-  - API keys for hosted deployments
+  **Optional Configuration:**
+  - **AUTO_START_DASHBOARD**: Automatically start the web dashboard on server startup
+  - **LANGUAGE**: Set the interface language (default: auto-detect)
+  - **PORT**: Custom port for the dashboard server (default: auto-assign)
 
-  ## Example Usage
+  ## Examples
 
-  Ask your AI assistant to:
+  ```txt
+  Create a spec for user authentication system
+  ```
 
-  - **Create Development Specs** - "Create a spec for user authentication system"
-  - **Track Progress** - "List my specs and show their current status"
-  - **Execute Tasks** - "Execute task 1.2 in the user-auth spec"
-  - **Approval Workflow** - "Request approval for the authentication design spec"
-  - **Dashboard Access** - "Show me the spec workflow dashboard"
+  ```txt
+  List my specs and show their current status
+  ```
+
+  ```txt
+  Execute task 1.2 in the user-auth spec
+  ```
+
+  ### Usage Tips
+
+  - Start with steering documents for project-level guidance
+  - Create requirements first, then design after approval
+  - Use the dashboard or VSCode extension for visual progress tracking
+  - Request approval before moving to the next development phase
 
 metadata:
   categories: Developer Tools
+  unsupportedTools: none
   tags:
     - workflow
-    - spec
-    - automation
+    - spec-driven-development
     - project-management
+    - approval-workflow
+    - task-tracking
 icon: https://github.com/Pimzino.png
 repoURL: https://github.com/Pimzino/spec-workflow-mcp
+created: 2025-01-15
 
 env:
   - key: PROJECT_PATH
     name: Project Directory Path
     required: true
     sensitive: false
-    description: "Absolute path to the project directory where specs and workflow files will be managed"
-  - key: SPEC_STORAGE
-    name: Spec Storage Location
-    required: false
-    sensitive: false
-    description: "URL or path where specs are persisted. Examples: s3://bucket/specs, file:///data/specs, or a remote HTTP endpoint. Default: local project directory"
-  - key: SWF_EXECUTION_MODE
-    name: Execution Mode
-    required: false
-    sensitive: false
-    description: "Default execution adapter: local, http, or cloud. Default: local"
-  - key: SWF_API_KEY
-    name: API Key
-    required: false
-    sensitive: true
-    description: "API key used to authenticate requests with a hosted Spec Workflow MCP instance"
+    description: 'Absolute path to the project directory where the .spec-workflow/ structure will be created and managed'
+
   - key: AUTO_START_DASHBOARD
     name: Auto Start Dashboard
     required: false
     sensitive: false
-    description: "Set to 'true' to automatically start the web dashboard on server startup"
+    description: 'Set to "true" to automatically start the web dashboard on server startup. Default: false'
+
+  - key: LANGUAGE
+    name: Interface Language
+    required: false
+    sensitive: false
+    description: 'Set the interface language. Supported: en, ja, zh, es, pt, de, fr, ru, it, ko, ar. Default: auto-detect'
+
+  - key: PORT
+    name: Dashboard Port
+    required: false
+    sensitive: false
+    description: 'Custom port for the dashboard server. Default: auto-assign available port'
 
 toolPreview:
-  - name: create_spec
-    description: Create a new spec in the project workflow
-  - name: list_specs
-    description: List all specs and their current status
-  - name: get_spec_details
-    description: Get detailed information about a specific spec
-  - name: update_spec_status
-    description: Update the status or progress of a spec
-  - name: execute_task
-    description: Execute a specific task within a spec
-  - name: request_approval
-    description: Submit a spec or task for approval
-  - name: provide_feedback
-    description: Provide feedback on specs or tasks
-  - name: open_dashboard
-    description: Open the web-based dashboard interface
+  - name: spec-workflow-guide
+    description: Provides comprehensive guidance for the spec-driven workflow process
+    params: {}
+
+  - name: create-spec-doc
+    description: Creates or updates specification documents (requirements, design, tasks)
+    params:
+      specName: Name of the spec (kebab-case)
+      docType: Type - "requirements", "design", or "tasks"
+      content: Markdown content of the document
+      revision: Whether this is a revision (optional)
+
+  - name: spec-list
+    description: Lists all specifications with their current status
+    params: {}
+
+  - name: spec-status
+    description: Gets detailed status information for a specific spec
+    params:
+      specName: Name of the spec to check
+
+  - name: manage-tasks
+    description: Comprehensive task management including updates, status changes, and progress tracking
+    params:
+      specName: Name of the spec
+      action: Action - "update", "complete", "list", "progress"
+      taskId: Task ID (required for update/complete)
+      status: New status - "pending", "in-progress", "completed" (optional)
+      notes: Additional notes for the task (optional)
+
+  - name: get-spec-context
+    description: Retrieves complete context for a specific spec
+    params:
+      specName: Name of the spec
+      includeContent: Include document content (optional)
+
+  - name: create-steering-doc
+    description: Creates project steering documents (product, tech, structure)
+    params:
+      docType: Type - "product", "tech", or "structure"
+      content: Markdown content of the document
+
+  - name: request-approval
+    description: Requests user approval for a document
+    params:
+      specName: Name of the spec
+      docType: Document type to approve
+      documentId: Unique ID for tracking
+      content: Document content for review
 
 runtime: npx
 npxConfig:
   package: "@pimzino/spec-workflow-mcp@latest"
   args:
-  - "${PROJECT_PATH}"
+    - "${PROJECT_PATH}"
+
+# Local installation / developer experience (npx)
+install:
+  command: npx
+  args:
+    - -y
+    - "@pimzino/spec-workflow-mcp@latest"
+    - "${PROJECT_PATH}"
+
+# VS Code install redirect payload (used in description badge)
+vsCodeInstall:
+  name: spec-workflow
+  command: npx
+  args:
+    - -y
+    - "@pimzino/spec-workflow-mcp@latest"
+    - "/path/to/your/project"
+
+examples:
+  - description: Create a complete user authentication spec
+    code: |
+      ```yaml
+      # Create requirements document
+      specName: "user-authentication"
+      docType: "requirements"
+      content: |
+        # User Authentication Requirements
+        
+        ## Overview
+        Implement secure user authentication system
+        
+        ## Functional Requirements
+        - User registration with email validation
+        - Secure password authentication
+        - Session management
+        - Password reset functionality
+      ```
+
+  - description: Track progress and manage tasks
+    code: |
+      ```yaml
+      # Update task status
+      specName: "user-authentication"
+      action: "update"
+      taskId: "1.2.1"
+      status: "in-progress"
+      notes: "Started implementation of password hashing"
+      ```
+
+notes: |
+  Spec Workflow MCP creates a structured development environment in your project directory.
+  It automatically creates a `.spec-workflow/` folder containing specs, approvals, templates,
+  and steering documents. The dashboard provides real-time visualization of project progress
+  and can be accessed through the web interface or VSCode extension. For optimal workflow,
+  create steering documents first, then follow the Requirements → Design → Tasks sequence
+  for each spec, using the approval system between phases.
 
