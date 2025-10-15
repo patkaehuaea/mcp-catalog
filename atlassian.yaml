@@ -59,12 +59,12 @@ env:
   description: "Base URL for your Confluence instance (Cloud or Server/DC). Example: https://your-company.atlassian.net/wiki or https://confluence.your-company.com"
 - key: CONFLUENCE_USERNAME
   name: Confluence Username (Cloud)
-  required: false
+  required: true
   sensitive: false
   description: Email/username for Confluence Cloud login. Ignored for Server/DC.
 - key: CONFLUENCE_API_TOKEN
   name: Confluence API Token (Cloud)
-  required: false
+  required: true
   sensitive: true
   description: API token for Confluence Cloud authentication. Generate at Atlassian security settings.
 - key: JIRA_URL
@@ -103,3 +103,7 @@ containerizedConfig:
   - streamable-http
   - --port
   - "8080"
+  - -e
+  - CONFLUENCE_URL=https://mcpexpress.atlassian.net/wiki
+  - -e
+  - CONFLUENCE_SPACES_FILTER=MFS
