@@ -92,9 +92,8 @@ env:
 
 runtime: uvx
 uvxConfig:
+  package: git+https://github.com/oraios/serena
   args:
-  - --from
-  - git+https://github.com/oraios/serena
   - serena
   - start-mcp-server
   - --transport
