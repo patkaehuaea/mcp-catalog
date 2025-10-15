@@ -54,8 +54,7 @@ repoURL: https://github.com/sooperset/mcp-atlassian
 env:
 - key: CONFLUENCE_URL
   name: Confluence Instance URL
-  required: false
-  sensitive: false
+  value: https://mcpexpress.atlassian.net/wiki
   description: "Base URL for your Confluence instance (Cloud or Server/DC). Example: https://your-company.atlassian.net/wiki or https://confluence.your-company.com"
 - key: CONFLUENCE_USERNAME
   name: Confluence Username (Cloud)
@@ -67,6 +66,10 @@ env:
   required: true
   sensitive: true
   description: API token for Confluence Cloud authentication. Generate at Atlassian security settings.
+- key: CONFLUENCE_SPACES_FILTER
+  name: Confluence Spaces Filter
+  value: MFS
+  description: "Space keys to limit Confluence searches to, comma-separated (e.g., 'MFS,DEV'). Leave empty to search all spaces."
 - key: JIRA_URL
   name: Jira Instance URL
   required: false
@@ -103,7 +106,3 @@ containerizedConfig:
   - streamable-http
   - --port
   - "8080"
-  - -e
-  - CONFLUENCE_URL=https://mcpexpress.atlassian.net/wiki
-  - -e
-  - CONFLUENCE_SPACES_FILTER=MFS
