@@ -1,0 +1,44 @@
+name: Awesome Copilot
+description: |
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+  [![Docker](https://img.shields.io/badge/Docker-Required-blue?logo=docker)](https://docker.com)
+  A Model Context Protocol (MCP) server that provides seamless access to the Awesome GitHub Copilot repository - a comprehensive collection of prompts, instructions, and chat modes. This server enables you to search, discover, and install GitHub Copilot customizations directly through natural language commands.
+  ## Features
+  - **Search Customizations**: Find prompts, instructions, and chat modes by keywords and use cases
+  - **Direct Installation**: Load and save customizations directly to your project repository
+  - **Comprehensive Library**: Access hundreds of community-curated GitHub Copilot enhancements
+  - **Categorized Content**: Browse specialized prompts for different programming languages and frameworks
+  - **Best Practices**: Benefit from expert-level coding standards and development patterns
+  - **AI-Powered Discovery**: Use natural language to find the perfect customization for your needs
+  ## What you'll need to connect
+  **Required:**
+  - **Docker**: Docker Desktop installed and running (no additional configuration needed)
+  ## Example Usage
+  - "Search for Python testing prompts"
+  - "Find React development instructions"
+  - "Load the database optimization chat mode"
+  - "Show me all available frontend prompts"
+  - "Install the code review instruction template"
+
+toolPreview:
+- name: search_instructions
+  description: Search GitHub Copilot customizations (prompts, instructions, chat modes) based on keywords
+  params:
+    keywords: Keywords to search for in the customizations library
+- name: load_instruction
+  description: Load a specific GitHub Copilot customization by filename
+  params:
+    filename: The filename of the customization to load (e.g., python.instructions.md)
+
+metadata:
+  categories: AI
+icon: https://avatars.githubusercontent.com/u/9919?s=48&v=4
+repoURL: https://github.com/github/awesome-copilot
+env: []
+
+runtime: containerized
+containerizedConfig:
+  image: ghcr.io/microsoft/mcp-dotnet-samples/awesome-copilot:latest
+  port: 8080
+  path: /
+  args: []
