@@ -204,10 +204,4 @@ repoURL: https://github.com/github/github-mcp-server
 
 runtime: remote
 remoteConfig:
-  hostname: api.githubcopilot.com
-  headers:
-  - name: Personal Access Token
-    description: GitHub PAT
-    key: Authorization
-    required: true
-    sensitive: true
+  fixedURL: https://api.githubcopilot.com/mcp/
